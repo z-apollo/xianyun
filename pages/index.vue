@@ -20,9 +20,11 @@
       <div class="search-bar">
         <!-- tab栏 -->
         <el-row type="flex" class="search-tab">
-          <span v-for="(item, index) in options" :key="index"
-          @click="handleTabChange(index)"
-          :class="{active: current === index}"
+          <span
+            v-for="(item, index) in options"
+            :key="index"
+            @click="handleTabChange(index)"
+            :class="{active: current === index}"
           >
             <i>{{item.title}}</i>
           </span>
@@ -30,7 +32,7 @@
 
         <!-- 输入框 -->
         <el-row type="flex" align="middle" class="search-input">
-          <input :placeholder="options[current].placeholder"/>
+          <input :placeholder="options[current].placeholder" />
           <i class="el-icon-search"></i>
         </el-row>
       </div>
@@ -54,32 +56,42 @@ export default {
 
       //tab栏的索引
       current: 0
-    }
+    };
   },
 
-  mounted() {
-    //请求轮播图数据
-    this.$axios({
+  // mounted() {
+  //   //请求轮播图数据
+  //   this.$axios({
+  //     url: "/scenics/banners"
+  //   }).then(res => {
+  //     const { data } = res.data;
+
+  //     //赋值给banners
+  //     this.banners = data;
+  //   })
+  // },
+  async mounted() {
+    //返回一个pomise，res就是axios的resolve的参数（也就是.then的回调函数的参数）
+    const res = await this.$axios({
       url: "/scenics/banners"
-    }).then(res => {
-      const { data } = res.data;
-
-      //赋值给banners
-      this.banners = data;
     })
+    
+    const { data } = res.data;
+    //赋值给banners
+    this.banners = data;
   },
 
-  methods:{
+  methods: {
     //点击tab栏时候触发
-    handleTabChange(index){
-      this.current = index
+    handleTabChange(index) {
+      this.current = index;
 
-      if(index === 2){
-        this.$router.push("/air")
+      if (index === 2) {
+        this.$router.push("/air");
       }
     }
   }
-}
+};
 </script>
 
 <style scoped lang="less">
