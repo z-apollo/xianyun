@@ -54,6 +54,18 @@ export default {
                 //valid是表单验证的结果
                 if(valid){
                     //提交登录接口
+                    this.$axios({
+                        url:"/accounts/login",
+                        data: this.form,
+                        method:"POST"
+                    }).then(res=>{
+                        console.log(res)
+                        if(res.status == 200){
+                            this.$message.success("登录成功")
+                            //跳转到首页
+                            //this.$router.push("/")
+                        }
+                    })
                 }
             })
         }
