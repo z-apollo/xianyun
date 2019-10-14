@@ -92,8 +92,13 @@ export default {
         // 数组中的元素必须是一个对象，对象中必须要有value属性
         queryDepartSearch(value, cb){
             //输入框为空时不请求
-            if(!value) return;
-            
+            if(!value) {
+                //不显示下拉框
+                cb([]);
+
+                return;
+            }
+
             // 请求搜索建议城市
             this.$axios({
                 url:"/airs/city?name=" + value
@@ -120,8 +125,11 @@ export default {
        
         // 出发城市下拉选择时触发
         handleDepartSelect(item) {
-            
+            //获取到表单需要的机票信息
+            this.form.departCity = item.value
+            this.form.departCode = item.sort
         },
+
         // 目标城市下拉选择时触发
         handleDestSelect(item) {
             
@@ -136,7 +144,7 @@ export default {
         },
         // 提交表单是触发
         handleSubmit(){
-           
+           console.log(this.form)
         }
     },
     mounted() {
