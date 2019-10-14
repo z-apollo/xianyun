@@ -24,6 +24,7 @@
                 @select="handleDepartSelect"
                 class="el-autocomplete"
                 v-model="form.departCity"
+                @blur="handleDepartBlur"
                 ></el-autocomplete>
             </el-form-item>
 
@@ -77,7 +78,10 @@ export default {
                 destCity: "",  // 到达城市
                 destCode: "",  // 到达城市代码
                 departDate: "", // 日期字符串
-            }
+            },
+
+            //存放newData的城市的数组
+            cities:[]
         }
     },
     methods: {
@@ -112,11 +116,23 @@ export default {
                     return item
                 })
 
+                //把newData赋值给data中的cities
+                this.cities = newData
+
                 //展示到下拉列表
                 cb(newData)
             })
-
         },
+        
+        //出发城市失去焦点的时候默认选中第一个
+        handleDepartBlur(){
+            //默认选中城市列表的第一个
+            if(this.cities.length > 0){
+                this.form.departCity = this.cities[0].value
+                this.form.departCode = this.cities[0].sort
+            }
+        },
+
         // 目标城市输入框获得焦点时触发
         // value 是选中的值，cb是回调函数，接收要展示的列表
         queryDestSearch(value, cb){
