@@ -14,6 +14,7 @@
         <FlightsItem v-for="(item, index) in dataList" :key="index" :item="item" />
 
         <el-pagination
+          v-if="flightsData.flights.length"
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
           :current-page="pageIndex"
@@ -22,8 +23,13 @@
           layout="total, sizes, prev, pager, next, jumper"
           :total="flightsData.total"
         ></el-pagination>
-      </div>
 
+        <!-- loading等于false表示加载完毕之后才显示 -->
+        <div v-if="flightsData.flights.length === 0 && !loading" style="padding: 50px; text-align:center">
+            该航班暂无数据
+        </div>
+      </div>
+      
       <!-- 侧边栏 -->
       <div class="aside">
         <!-- 侧边栏组件 -->
@@ -51,8 +57,10 @@ export default {
       //当前的页数
       pageIndex: 1,
       //当前的条数
-      pageSize: 5
-    };
+      pageSize: 5,
+      //判断是否正在加载
+      loading: true,
+    }
   },
 
   components: {
@@ -80,8 +88,7 @@ export default {
     //从flights总列表数据中切割出来数组列表
     dataList() {
       const arr = this.flightsData.flights.slice(
-        (this.pageIndex - 1) * this.pageSize,
-        this.pageIndex * this.pageSize
+        (this.pageIndex - 1) * this.pageSize, this.pageIndex * this.pageSize
       );
       return arr;
     }
