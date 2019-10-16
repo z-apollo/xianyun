@@ -84,16 +84,26 @@ export default {
     // 选择机场时候触发
     handleAirport(value) {
       //console.log(value)
-      const arr = this.Data.flights.filter(v =>{
-          return v.org_airport_name === value
-      })
+      const arr = this.Data.flights.filter(v => {
+        return v.org_airport_name === value;
+      });
       //console.log(arr)
-      this.$emit("setDataList", arr)
+      this.$emit("setDataList", arr);
     },
 
     // 选择出发时间时候触发
     handleFlightTimes(value) {
-      
+      //  数组中第一项是开始时间，第二项是终止时间
+      const arr = value.split(","); // [6, 12]
+
+      const arr2 = this.Data.flights.filter(v => {
+        // 出发时间的小时
+        const start = +v.dep_time.split(":")[0];
+        // 比较航班出发时间是否在选中的时间段内
+        return start >= +arr[0] && start < +arr[1];
+      });
+      // 修改列表数据的
+      this.$emit("setDataList", arr2);
     },
 
     // 选择航空公司时候触发
