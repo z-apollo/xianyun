@@ -73,7 +73,7 @@ export default {
       loading: true,
 
       //分页条数
-      total:0
+      total: 0
     };
   },
 
@@ -98,7 +98,7 @@ export default {
       //   this.dataList = this.flightsData.flights.slice(0, this.pageSize)
 
       // 赋值多一分给缓存的对象,一旦赋值之后不能再被修改
-      this.cacheFlightsData = {...res.data};
+      this.cacheFlightsData = { ...res.data };
     });
   },
 
@@ -142,9 +142,9 @@ export default {
     //给过滤组件修改flightsData的flights
     setDataList(arr) {
       //根据过滤条件修改列表
-      this.flightsData.flights = arr
-      this.total = arr.length
-      this.pageIndex = 1
+      this.flightsData.flights = arr;
+      this.total = arr.length;
+      this.pageIndex = 1;
     }
   }
 };
