@@ -33,13 +33,12 @@
     <div class="air-column">
       <h2>保险</h2>
       <div>
-        <div class="insurance-item"  v-for="(item, index) in this.detail.insurances" :key="index">
+        <div class="insurance-item" v-for="(item, index) in this.detail.insurances" :key="index">
           <el-checkbox
-           :label="`${item.type}：￥${item.price}/份×1  最高赔付${item.compensation}`" 
-           border
-           @change="handleChange(item.id)"
-           >
-          </el-checkbox>
+            :label="`${item.type}：￥${item.price}/份×1  最高赔付${item.compensation}`"
+            border
+            @change="handleChange(item.id)"
+          ></el-checkbox>
         </div>
       </div>
     </div>
@@ -75,16 +74,16 @@ export default {
   data() {
     return {
       //机票的详情
-      detail:{},
+      detail: {},
 
-      users: [ 
-        {username: "", id: ""} //姓名、身份证号
+      users: [
+        { username: "", id: "" } //姓名、身份证号
       ],
-      insurances:[],    //保险id的集合
-      contactName:"",   //联系人姓名
-      contactPhone:"",  //联系人手机
-      invoice:"false",   //是否需要发票，写死
+      insurances: [],
+      contactName: "", // 联系人
+      contactPhone: "", // 联系电话
       captcha: "", // 验证码
+      invoice: false // 发票，写死
     };
   },
 
@@ -92,7 +91,7 @@ export default {
     // 添加乘机人
     handleAddUsers() {
       // 给users中添加多一项
-      this.users.push({username: "", id: ""});
+      this.users.push({ username: "", id: "" });
     },
 
     // 移除乘机人
@@ -101,50 +100,65 @@ export default {
     },
 
     // 发送手机验证码
-    async handleSendCaptcha(){
-        // 判断是否有手机号码
-        if(!this.contactPhone){
-            this.$message.error("手机号码不能为空");
-            return;
-        }
-        // dispatch返回的是promise
-        // this.$store.dispatch("user/sendCaptcha", this.contactPhone).then(res => {
-        //     this.$message.success(`当前的验证码：` + res.data.code)
-        // })
-        // 使用await的方式来调用
-        const res = await this.$store.dispatch("user/sendCaptcha", this.contactPhone);
-        this.$message.success(`当前的验证码：` + res.data.code)
+    async handleSendCaptcha() {
+      // 判断是否有手机号码
+      if (!this.contactPhone) {
+        this.$message.error("手机号码不能为空");
+        return;
+      }
+      // dispatch返回的是promise
+      // this.$store.dispatch("user/sendCaptcha", this.contactPhone).then(res => {
+      //     this.$message.success(`当前的验证码：` + res.data.code)
+      // })
+      // 使用await的方式来调用
+      const res = await this.$store.dispatch(
+        "user/sendCaptcha",
+        this.contactPhone
+      );
+      this.$message.success(`当前的验证码：` + res.data.code);
     },
 
     // 提交订单
     handleSubmit() {
       const data = {
-          users: this.users,
-          insurances: this.insurances,
-          contactName: this.contactName,
-          contactPhone: this.contactPhone,
-          invoice: this.invoice,
-          captcha: this.captcha,
-          seat_xid: this.$route.query.seat_xid,
-          air: this.$route.query.id,
-      }
-
+        users: this.users,
+        insurances: this.insurances,
+        contactName: this.contactName,
+        contactPhone: this.contactPhone,
+        captcha: this.captcha,
+        invoice: this.invoice,
+        seat_xid: this.$route.query.seat_xid,
+        air: this.$route.query.id
+      };
       console.log(data);
+
+      // 提交订单接口
+      this.$axios({
+        url: "/airorders",
+        method: "POST",
+        data,
+        headers: {
+          // 这是jwt标准的token
+          Authorization: `Bearer ${this.$store.state.user.userInfo.token}`
+        }
+      }).then(res => {
+        console.log(res);
+      });
     },
 
     //选择保险时候触发，id就是保险的id
-    handleChange(id){
-        //需要判断保险数组中是否存在，如果存在要删除，不存在就添加
-        const index = this.insurances.indexOf(id)
+    handleChange(id) {
+      //需要判断保险数组中是否存在，如果存在要删除，不存在就添加
+      const index = this.insurances.indexOf(id);
 
-        if(index > -1){
-            //已存在，则删除
-            this.insurances.splice(index, 1)
-        }else{
-            //未存在，则添加
-            this.insurances.push(id)
-        }
-        console.log(this.insurances)
+      if (index > -1) {
+        //已存在，则删除
+        this.insurances.splice(index, 1);
+      } else {
+        //未存在，则添加
+        this.insurances.push(id);
+      }
+      console.log(this.insurances);
     }
   },
 
@@ -158,8 +172,8 @@ export default {
       }
     }).then(res => {
       console.log(res);
-    
-      this.detail = res.data
+
+      this.detail = res.data;
     });
   }
 };
