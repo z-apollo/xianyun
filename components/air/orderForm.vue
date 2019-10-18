@@ -68,6 +68,9 @@
         <el-button type="warning" class="submit" @click="handleSubmit">提交订单</el-button>
       </div>
     </div>
+
+    <!-- 调用总价格，让computed会执行 -->
+    <span v-show="false">{{allPrice}}</span>
   </div>
 </template>
 
@@ -167,17 +170,10 @@ export default {
   computed: {
     // 计算总价格
     allPrice() {
-      // console.log(123);
-      // let price = 0;
-      // let len = this.users.length;
-      // price += this.data.seat_infos.org_settle_price * len;
-      // this.insurances.forEach(v => {
-      //   price += this.data.insurances[v - 1].price * len;
-      // });
-      // price += this.data.airport_tax_audlet * len;
-      // // 触发设置总金额事件
-      // this.$emit("setAllPrice", price);
-      // return price;
+      //把价格传递给父组件
+      this.$emit("getAllPrice", 2)
+
+      return 2;
     }
   },
 

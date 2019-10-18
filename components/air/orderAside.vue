@@ -37,7 +37,7 @@
     </el-row>
     <el-row type="flex" justify="space-between" align="middle" class="info-bar">
       <span>应付总额：</span>
-      <span class="price">￥0</span>
+      <span class="price">￥{{allPrice}}</span>
     </el-row>
   </div>
 </template>
@@ -48,6 +48,12 @@ export default {
     // 组件接受的是data属性
     data: {
       type: Object,
+      default: {}
+    },
+
+    //总价格
+    allPrice: {
+      type: Number,
       default: {}
     }
   },
