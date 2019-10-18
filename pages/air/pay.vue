@@ -25,6 +25,9 @@
 </template>
 
 <script>
+// 导入二维码生成插件
+import QRCode from "qrcode";
+
 export default {
   data() {
     return {
@@ -46,6 +49,12 @@ export default {
         }
       }).then(res => {
         this.order = res.data;
+
+        // 获取canvas元素
+        const canvas = document.querySelector("#qrcode-stage");
+        QRCode.toCanvas(canvas, this.order.payInfo.code_url, {
+          width: 200
+        });
       });
     }, 10);
   }
