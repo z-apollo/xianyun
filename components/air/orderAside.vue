@@ -11,7 +11,7 @@
           <span>{{data.org_airport_name}}{{data.org_airport_quay}}</span>
         </el-col>
         <el-col :span="14" class="flight-time">
-          <span>--- 2时20分 ---</span>
+          <span>--- {{rankTime}} ---</span>
           <span>{{data.airline_name}}{{data.flight_no}}</span>
         </el-col>
         <el-col :span="5" class="flight-airport">
@@ -43,6 +43,9 @@
 </template>
 
 <script>
+// 导入计算的方法
+import {computeTime} from "@/utils/utils"
+
 export default {
   props: {
     // 组件接受的是data属性
@@ -59,8 +62,9 @@ export default {
   },
 
   computed: {
-    // rankTime() {
-    // }
+    rankTime() {
+      return computeTime(this.data.arr_time, this.data.dep_time);
+    }
   }
 };
 </script>
