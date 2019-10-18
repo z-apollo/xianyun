@@ -1,5 +1,7 @@
 <template>
   <div class="main">
+    <input type="hidden" :value="allPrice" />
+
     <div class="air-column">
       <h2>乘机人</h2>
       <el-form class="member-info">
@@ -162,6 +164,23 @@ export default {
     }
   },
 
+  computed: {
+    // 计算总价格
+    allPrice() {
+      // console.log(123);
+      // let price = 0;
+      // let len = this.users.length;
+      // price += this.data.seat_infos.org_settle_price * len;
+      // this.insurances.forEach(v => {
+      //   price += this.data.insurances[v - 1].price * len;
+      // });
+      // price += this.data.airport_tax_audlet * len;
+      // // 触发设置总金额事件
+      // this.$emit("setAllPrice", price);
+      // return price;
+    }
+  },
+
   mounted() {
     const { id, seat_xid } = this.$route.query;
     // 请求机票详情
@@ -174,6 +193,9 @@ export default {
       console.log(res);
 
       this.detail = res.data;
+
+      // 把detail返回给父组件
+      this.$emit("getDetail", this.detail);
     });
   }
 };
