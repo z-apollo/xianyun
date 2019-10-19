@@ -25,7 +25,7 @@
 </template>
 
 <script>
-// 导入二维码生成插件
+// 导入二维码生成插件(使用前先npm install qrcode -S)
 import QRCode from "qrcode";
 
 export default {
